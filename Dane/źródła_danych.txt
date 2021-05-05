@@ -1,0 +1,5 @@
+Dane dotyczące pogody pobrane z:
+https://danepubliczne.imgw.pl/data/dane_pomiarowo_obserwacyjne/
+
+Dane dotyczące aktywności słonecznej:
+http://www.sidc.be/silso/datafiles
