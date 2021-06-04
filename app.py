@@ -1,4 +1,4 @@
-#import bubliotek
+#import bibliotek
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -40,17 +40,18 @@ frame_s['Data']=pd.to_datetime(frame_s['Data'])
 
 figure=plt.Figure(figsize=(3,3),dpi=100)
 ax=figure.add_subplot(111)
-canvas = FigureCanvasTkAgg(figure, rightframe)
+#canvas = FigureCanvasTkAgg(figure, rightframe)
 
 ## tworzenie wykresu
 def make_fig():
     global figure
     global ax
-    global canvas
-    figure.clear()
-   # canvas.delete()
+    #global canvas
+    figure.clf()
+    ax.cla()
     figure=plt.Figure(figsize=(3,3),dpi=100)
     ax=figure.add_subplot(111)
+    #zczytanie danych X i Y
     if x_file.get()=='Pogoda': x=frame[x_clicked.get()]
     elif x_file.get()=='Aktywność słoneczna': x=frame_s[x_clicked.get()]
     else: x=frame_a[x_clicked.get()]
@@ -58,11 +59,19 @@ def make_fig():
     if y_file.get()=='Pogoda': y=frame[y_clicked.get()]
     elif y_file.get()=='Aktywność słoneczna': y=frame_s[y_clicked.get()]
     else: y=frame_a[y_clicked.get()]
+    
     #znalezienie zakresu odpowiadającego podanym datom
     id_s = list(frame.Data).index(pd.to_datetime(date_s.get()))
     id_f = list(frame.Data).index(pd.to_datetime(date_f.get()))
+    
     ax.plot(x[id_s:id_f],y[id_s:id_f],'r.',lw=1)
 
+    #opis osi
+    ax_x=x_clicked.get()
+    ax_y=y_clicked.get()
+    ax.set_xlabel(ax_x)
+    ax.set_ylabel(ax_y)
+    
     canvas = FigureCanvasTkAgg(figure, rightframe)
     canvas.draw()
     canvas.get_tk_widget().pack(side=tk.RIGHT,fill=tk.BOTH, expand=True)
@@ -115,7 +124,7 @@ x_clicked = tk.StringVar()
 x_clicked.set(axes_names_x[0])
 
 y_clicked = tk.StringVar()
-y_clicked.set(axes_names_y[0])
+y_clicked.set(axes_names_y[1])
 
 # wybór dat
 date_label = tk.Label(master=firstframe, bg='#4949AD', padx=10,pady=10,
