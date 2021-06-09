@@ -9,7 +9,7 @@ from tkinter import filedialog
 import os
 
 root = tk.Tk()
-root.title('Projekcik z Pythona')
+root.title('Projekt z Pythona')
 root.geometry("950x500")
 root.config(bg='#2c2f33')
 
@@ -27,10 +27,7 @@ secondframe.pack(side='bottom', fill=tk.BOTH, expand=True)
 
 
 ## wczytanie danych
-frame=pd.read_csv('.\Dane\Pogoda1.csv')#,usecols=['Data','Temperatura powietrza',
-                                        #        'Zachmurzenie ogólne [oktanty]','Prędkość wiatru  [m/s]',
-                                         #       'Wilgotność względna [%]','Ciśnienie na pozimie stacji [hPa]',
-                                          #      'Ciśnienie na pozimie morza [hPa]','Opad za 6 godzin [mm]'])
+frame=pd.read_csv('.\Dane\Pogoda1.csv')
 frame['Data']=pd.to_datetime(frame['Data'])
 del frame['Unnamed: 0']
 
@@ -44,17 +41,21 @@ del frame_s['Unnamed: 0']
 
 figure=plt.Figure(figsize=(3,3),dpi=100)
 ax=figure.add_subplot(111)
-#canvas = FigureCanvasTkAgg(figure, rightframe)
+
 
 ## tworzenie wykresu
 def make_fig():
     global figure
     global ax
-    #global canvas
-    figure.clf()
-    ax.cla()
+    global rightframe
+    rightframe.destroy()
+    rightframe=tk.Frame(root,bg="#A9A9FD",relief=SUNKEN,bd=2)
+    rightframe.pack(side='right',fill=tk.BOTH,expand=True)
+    
+    
     figure=plt.Figure(figsize=(3,3),dpi=100)
     ax=figure.add_subplot(111)
+    
     #zczytanie danych X i Y
     if x_file.get()=='Pogoda': x=frame[x_clicked.get()]
     elif x_file.get()=='Aktywność słoneczna': x=frame_s[x_clicked.get()]
@@ -85,6 +86,7 @@ def make_fig():
     toolbar.update()
     toolbar.place(x=0,y=0)
     canvas._tkcanvas.pack(side=tk.RIGHT,fill=tk.BOTH, expand=True)
+    
     #aktualizacja statów
     update_stat(x,y)
 
@@ -99,45 +101,45 @@ def update_stat(x,y):
     global corr_label
     
     if x_clicked.get()=='Data' and y_clicked.get()=='Data':
-        max_label = tk.Label(secondframe,text='Wartość maksymalna: -',bg='#CAC').grid(column=0,row=1,sticky="W")
-        min_label = tk.Label(secondframe,text='Wartość minimalna: -',bg='#CAC').grid(column=0,row=2,sticky="W")
-        mean_label = tk.Label(secondframe,text='Wartość średnia: -',bg='#CAC').grid(column=0,row=3,sticky="W")
-        med_label = tk.Label(secondframe,text='Mediana: -',bg='#CAC').grid(column=0,row=4,sticky="W")
-        std_label = tk.Label(secondframe,text='Rozrzut (std): -',bg='#CAC').grid(column=0,row=5,sticky="W")
+        max_label = tk.Label(secondframe,width=45,anchor='w',text='Wartość maksymalna: -',bg='#CAC').grid(column=0,row=1,sticky="W")
+        min_label = tk.Label(secondframe,width=45,anchor='w',text='Wartość minimalna: -',bg='#CAC').grid(column=0,row=2,sticky="W")
+        mean_label = tk.Label(secondframe,width=45,anchor='w',text='Wartość średnia: -',bg='#CAC').grid(column=0,row=3,sticky="W")
+        med_label = tk.Label(secondframe,width=45,anchor='w',text='Mediana: -',bg='#CAC').grid(column=0,row=4,sticky="W")
+        std_label = tk.Label(secondframe,width=45,anchor='w',text='Rozrzut (std): -',bg='#CAC').grid(column=0,row=5,sticky="W")
     elif x_clicked.get()=='Data':
-        max_label = tk.Label(secondframe,bg='#CAC',
+        max_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość maksymalna: {:.3f} dla {}'.format(max(y),str(list(x)[list(y).index(max(y))]).split()[0])).grid(
                                  column=0,row=1,sticky="W") 
-        min_label = tk.Label(secondframe,bg='#CAC',
+        min_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość minimalna: {:.3f} dla {}'.format(min(y),str(list(x)[list(y).index(min(y))]).split()[0])).grid(
                                  column=0,row=2,sticky="W")
-        mean_label = tk.Label(secondframe,bg='#CAC',text='Wartość średnia: {:.3f}'.format(y.mean(),)).grid(column=0,row=3,sticky="W")
-        med_label = tk.Label(secondframe,bg='#CAC',text='Mediana: {:.3f}'.format(y.median())).grid(column=0,row=4,sticky="W")
-        std_label = tk.Label(secondframe,bg='#CAC',text='Rozrzut (std): {:.3f}'.format(y.std())).grid(column=0,row=5,sticky="W")
+        mean_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Wartość średnia: {:.3f}'.format(y.mean(),)).grid(column=0,row=3,sticky="W")
+        med_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Mediana: {:.3f}'.format(y.median())).grid(column=0,row=4,sticky="W")
+        std_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Rozrzut (std): {:.3f}'.format(y.std())).grid(column=0,row=5,sticky="W")
     elif y_clicked.get()=='Data':
-        max_label = tk.Label(secondframe,bg='#CAC',
+        max_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość maksymalna: {:.3f} dla {}'.format(max(x),str(list(y)[list(x).index(max(x))]).split()[0])).grid(
                                  column=0,row=1,sticky="W") 
-        min_label = tk.Label(secondframe,bg='#CAC',
+        min_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość minimalna: {:.3f} dla {}'.format(min(x),str(list(y)[list(x).index(min(x))]).split()[0])).grid(
                                  column=0,row=2,sticky="W")
-        mean_label = tk.Label(secondframe,bg='#CAC',text='Wartość średnia: {:.3f}'.format(x.mean(),)).grid(column=0,row=3,sticky="W")
-        med_label = tk.Label(secondframe,bg='#CAC',text='Mediana: {:.3f}'.format(x.median())).grid(column=0,row=4,sticky="W")
-        std_label = tk.Label(secondframe,bg='#CAC',text='Rozrzut (std): {:.3f}'.format(x.std())).grid(column=0,row=5,sticky="W")
+        mean_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Wartość średnia: {:.3f}'.format(x.mean(),)).grid(column=0,row=3,sticky="W")
+        med_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Mediana: {:.3f}'.format(x.median())).grid(column=0,row=4,sticky="W")
+        std_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Rozrzut (std): {:.3f}'.format(x.std())).grid(column=0,row=5,sticky="W")
     else:
-        max_label = tk.Label(secondframe,bg='#CAC',
+        max_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość maksymalna: {:.3f} dla {:.3f}'.format(max(y),x[y.idxmax()])).grid(
                                  column=0,row=1,sticky="W") 
-        min_label = tk.Label(secondframe,bg='#CAC',
+        min_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',
                              text='Wartość minimalna: {:.3f} dla {:.3f}'.format(min(y),x[y.idxmax()])).grid(
                                  column=0,row=2,sticky="W")
-        mean_label = tk.Label(secondframe,bg='#CAC',text='Wartość średnia: {:.3f}'.format(y.mean(),)).grid(column=0,row=3,sticky="W")
-        med_label = tk.Label(secondframe,bg='#CAC',text='Mediana: {:.3f}'.format(y.median())).grid(column=0,row=4,sticky="W")
-        std_label = tk.Label(secondframe,bg='#CAC',text='Rozrzut (std): {:.3f}'.format(y.std())).grid(column=0,row=5,sticky="W")
+        mean_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Wartość średnia: {:.3f}'.format(y.mean(),)).grid(column=0,row=3,sticky="W")
+        med_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Mediana: {:.3f}'.format(y.median())).grid(column=0,row=4,sticky="W")
+        std_label = tk.Label(secondframe,width=45,anchor='w',bg='#CAC',text='Rozrzut (std): {:.3f}'.format(y.std())).grid(column=0,row=5,sticky="W")
     try:
-        corr_label = tk.Label(secondframe,bg='#CAC',text='Korelacja: {:.3f}'.format(y.corr(x))).grid(column=0,row=6,sticky="W")
+        corr_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',text='Korelacja: {:.3f}'.format(y.corr(x))).grid(column=0,row=6,sticky="W")
     except TypeError:
-        corr_label = tk.Label(secondframe,bg='#CAC',text='Korelacja: -').grid(column=0,row=6,sticky="W")
+        corr_label = tk.Label(secondframe,bg='#CAC',width=45,anchor='w',text='Korelacja: -').grid(column=0,row=6,sticky="W")
 #-----------------------------------------------------------------
 #-----------------------------------------------------------------
     
@@ -178,12 +180,11 @@ y_file_label.grid(column=3,row=0,columnspan=3,sticky="W")
 
 
 # przyciski do wyboru osi x i y
-
 x_clicked = tk.StringVar()
 x_clicked.set(axes_names_x[0])
 
 y_clicked = tk.StringVar()
-y_clicked.set(axes_names_y[1])
+y_clicked.set(axes_names_y[5])
 
 # wybór dat
 date_label = tk.Label(master=firstframe, bg='#4949AD', padx=10,pady=10,
@@ -204,6 +205,16 @@ date_f.set('2021-04-30')
 date_s_e = tk.Entry(master=firstframe,textvariable=date_s).grid(column=0,row=4,columnspan=3,sticky="W")
 date_f_e = tk.Entry(master=firstframe,textvariable=date_f).grid(column=3,row=4,columnspan=3,sticky="W")
 
+
+# jakaś statystyka ----------------------------------------------------------------
+max_label =  tk.Label(secondframe,width=45,anchor='w',text='Wartość maksymalna:',bg='#CAC').grid(column=0,row=1,sticky="W")
+min_label =  tk.Label(secondframe,width=45,anchor='w',text='Wartość minimalna:',bg='#CAC').grid(column=0,row=2,sticky="W")
+mean_label = tk.Label(secondframe,width=45,anchor='w',text='Wartość średnia:',bg='#CAC').grid(column=0,row=3,sticky="W")
+med_label =  tk.Label(secondframe,width=45,anchor='w',text='Mediana:',bg='#CAC').grid(column=0,row=4,sticky="W")
+std_label =  tk.Label(secondframe,width=45,anchor='w',text='Rozrzut (std):',bg='#CAC').grid(column=0,row=5,sticky="W")
+corr_label = tk.Label(secondframe,width=45,anchor='w',text='Korelacja:',bg='#CAC').grid(column=0,row=6,sticky="W")
+
+
 # przycisk do zatwierdzenia wyborów
 def _accept():
     tk.Label(secondframe, text=x_mode).grid(column=0, row=4)    
@@ -211,14 +222,7 @@ def _accept():
 
 accept_button = tk.Button(master=firstframe, text="Zatwierdź", command=make_fig,
                           padx=10,pady=10,bg='#CAC').grid(column=0, row=10,sticky="W")
-# jakaś statystyka ----------------------------------------------------------------
 
-max_label =  tk.Label(secondframe,width=45,anchor='w',text='Wartość maksymalna:',bg='#CAC').grid(column=0,row=1,sticky="W")
-min_label =  tk.Label(secondframe,width=45,anchor='w',text='Wartość minimalna:',bg='#CAC').grid(column=0,row=2,sticky="W")
-mean_label = tk.Label(secondframe,width=45,anchor='w',text='Wartość średnia:',bg='#CAC').grid(column=0,row=3,sticky="W")
-med_label =  tk.Label(secondframe,width=45,anchor='w',text='Mediana:',bg='#CAC').grid(column=0,row=4,sticky="W")
-std_label =  tk.Label(secondframe,width=45,anchor='w',text='Rozrzut (std):',bg='#CAC').grid(column=0,row=5,sticky="W")
-corr_label = tk.Label(secondframe,width=45,anchor='w',text='Korelacja:',bg='#CAC').grid(column=0,row=6,sticky="W")
 
 #przycisk do zamykania programu------------------------------------------------------------------------
 def _quit():
